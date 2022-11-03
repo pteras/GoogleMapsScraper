@@ -10,6 +10,8 @@ The plan:
 
 Questions:
 1. API? Which? 
-2. How to calculate distance with the API
-3. Sorting? 
-4. User interface? 
+- https://pypi.org/project/googlemaps/
+3. How to calculate distance with the API
+- https://www.geeksforgeeks.org/program-distance-two-points-earth/
+5. Sorting? 
+6. User interface? 

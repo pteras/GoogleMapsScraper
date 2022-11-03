@@ -6,9 +6,13 @@ gmaps = googlemaps.Client(key="AIzaSyB4LyVDfTiPPS6cLQvRGLJMSTEE0Dp3rLs")
 
 # Testing geocode
 address_geocode = gmaps.geocode('Ruukinrinne 4, Turku, Finland')
-print(address_geocode)
+#print(address_geocode)
 
-print(gmaps.find_place("restaurant", "textquery",location_bias="circle:1000@60.45519009999999,22.3045487",language="fi"))
+
+paikka = gmaps.find_place("restaurant", "textquery",location_bias="circle:10@60.45519009999999,22.3045487")
+print(paikka)
+print(gmaps.reverse_geocode(paikka["candidates"][0]["place_id"]))
+
 # Get location 
 
 
@@ -41,7 +45,7 @@ lat1 = 60.45519009999999
 lon1 = 22.3045487
 lat2 = 60.45715565610971
 lon2 =  22.29241985762579
-print(distance(lat1, lat2, lon1, lon2), "km")
+#print(distance(lat1, lat2, lon1, lon2), "km")
 # jos alle km ni muuta metreiksi
 
 

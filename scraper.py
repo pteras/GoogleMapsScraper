@@ -7,33 +7,26 @@ import os
 gmaps = googlemaps.Client(key="AIzaSyB4LyVDfTiPPS6cLQvRGLJMSTEE0Dp3rLs")
 
 # Testing geocode
-#address = 'Ruukinrinne 4 Turku'
-address = 'ruukinrinne 4 turku' #input('Type in your address: \n')
-business = 'restaurant' #input('What kind of business/restaurant do you want to search: \n')
-meters = 1000 #int(input('Search radius in meters: \n'))
+address = 'Ruukinrinne 4 Turku'
+#address = input('Type in your address: \n')
+business = 'restaurant' 
+#business = input('What kind of business/restaurant do you want to search: \n')
+meters = int(1000)
+#meters = int(input('Search radius in meters: \n'))
 
 address_longlat = gmaps.geocode(address)[0]
-#print(address_longlat)
-#address_longlat.keys()
 lat1 = address_longlat['geometry']['location']['lat']
 lon1 = address_longlat['geometry']['location']['lng']
-
-#print(lat1)
-#print(lon1)
 
 address_longlat = lat1,lon1
 # !!!
 places = gmaps.places_nearby(location= address_longlat,radius=meters, type=business)
-#print(json.dumps(places, indent=2))
+print(json.dumps(places, indent=2))
 
 if len(places['results']) in places:
     print ('There are results.')
-
 elif places['status'] == 'ZERO_RESULTS':
     print ('No results found.')
-
-#lat2 = places['geometry']['location']['lat']
-#lon2 = places['geometry']['location']['lng']
 
 # Calculate Distance Between Two Points on Earth
 def distance(lat1, lat2, lon1, lon2):
@@ -60,17 +53,16 @@ def distance(lat1, lat2, lon1, lon2):
        
 # driver code for distance
 # need to get places longs and lats !!! 
-
-lat2 = 60.45715565610971
-lon2 =  22.29241985762579
-
-# need to round results
-if distance(lat1, lat2, lon1, lon2) >= 1:
-    print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2), "kilometers")
-else: 
-    print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
-
+for locations in places['results'][0]:
+    lat2 = places['results'][0]['geometry']['location']['lat']
+    lon2 = places['results'][0]['geometry']['location']['lng']
+    print(lat2)
+    # need to round results
+    if distance(lat1, lat2, lon1, lon2) >= 1:
+        print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2), "kilometers")
+    else: 
+        print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
 
 #paikka = gmaps.find_place("restaurant", "textquery",location_bias="circle:10@60.45519009999999,22.3045487")
 #print(paikka)
-#print(gmaps.reverse_geocode(paikka["candidates"][0]["place_id"]))
+#print(gmaps.reverse_geocode(paikka["candidates"][0]["place_id"]

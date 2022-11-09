@@ -53,16 +53,14 @@ def distance(lat1, lat2, lon1, lon2):
        
 # driver code for distance
 # need to get places longs and lats !!! 
-for locations in places['results'][0]:
-    lat2 = places['results'][0]['geometry']['location']['lat']
-    lon2 = places['results'][0]['geometry']['location']['lng']
-    print(lat2)
-    # need to round results
+for location in places['results']:
+    lat2 = location['geometry']['location']['lat']
+    lon2 = location['geometry']['location']['lng']
+    business_name = location['name']
+    # need to round result
     if distance(lat1, lat2, lon1, lon2) >= 1:
-        print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2), "kilometers")
+        print(r'Business name: ', business_name)
+        print(r'The distance to the restaurant is:',distance(lat1, lat2, lon1, lon2), "kilometers")
     else: 
-        print(r'The distance to the closest restaurant is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
-
-#paikka = gmaps.find_place("restaurant", "textquery",location_bias="circle:10@60.45519009999999,22.3045487")
-#print(paikka)
-#print(gmaps.reverse_geocode(paikka["candidates"][0]["place_id"]
+        print(r'Business name: ', business_name)
+        print(r'The distance to the restaurant is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")

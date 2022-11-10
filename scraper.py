@@ -66,6 +66,8 @@ for location in places['results']:
         print(location["rating"])
     else:
         print('No rating found.')
+    # if "open" in location:
+    #     print(location["open"])
     # rating = location['rating']
     # print(rating)
     # need to round result

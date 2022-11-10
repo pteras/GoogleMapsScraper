@@ -7,11 +7,11 @@ import os
 gmaps = googlemaps.Client(key="AIzaSyB4LyVDfTiPPS6cLQvRGLJMSTEE0Dp3rLs")
 
 # Testing geocode
-address = 'Ruukinrinne 4 Turku'
+address = 'Joukahaisenkatu 7 Turku'
 #address = input('Type in your address: \n')
 business = 'restaurant' 
 #business = input('What kind of business/restaurant do you want to search: \n')
-meters = int(1000)
+meters = int(100)
 #meters = int(input('Search radius in meters: \n'))
 
 address_longlat = gmaps.geocode(address)[0]
@@ -20,13 +20,10 @@ lon1 = address_longlat['geometry']['location']['lng']
 
 address_longlat = lat1,lon1
 # !!!
-places = gmaps.places_nearby(location= address_longlat,radius=meters, type=business)
-print(json.dumps(places, indent=2))
+places = gmaps.places_nearby(location= address_longlat, type=business, rank_by='distance')
 
-if len(places['results']) in places:
-    print ('There are results.')
-elif places['status'] == 'ZERO_RESULTS':
-    print ('No results found.')
+#places = gmaps.places_nearby(location= address_longlat,radius=meters, type=business, rank_by='distance')
+#print(json.dumps(places, indent=2))
 
 # Calculate Distance Between Two Points on Earth
 def distance(lat1, lat2, lon1, lon2):
@@ -53,14 +50,22 @@ def distance(lat1, lat2, lon1, lon2):
        
 # driver code for distance
 # need to get places longs and lats !!! 
+
+count=1
+
+if places['status'] == 'ZERO_RESULTS':
+        print ('No results found with your current parameters.')
+else:
+    print ('Here are your results: ')
+
 for location in places['results']:
     lat2 = location['geometry']['location']['lat']
     lon2 = location['geometry']['location']['lng']
     business_name = location['name']
     # need to round result
+    print(str(count)+'.')
+    count += 1
     if distance(lat1, lat2, lon1, lon2) >= 1:
-        print(r'Business name: ', business_name)
-        print(r'The distance to the restaurant is:',distance(lat1, lat2, lon1, lon2), "kilometers")
+        print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2), "kilometers ")
     else: 
-        print(r'Business name: ', business_name)
-        print(r'The distance to the restaurant is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
+        print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")

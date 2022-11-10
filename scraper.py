@@ -1,31 +1,33 @@
 import googlemaps
 from math import radians, cos, sin, asin, sqrt
-from datetime import datetime
 import json
-import os
 
 gmaps = googlemaps.Client(key="AIzaSyB4LyVDfTiPPS6cLQvRGLJMSTEE0Dp3rLs")
 
-# Testing geocode
-address = 'Joukahaisenkatu 7 Turku'
-#address = input('Type in your address: \n')
-business = 'restaurant' 
-#business = input('What kind of business/restaurant do you want to search: \n')
-meters = int(100)
-#meters = int(input('Search radius in meters: \n'))
+# comments for testing
+# address = 'Joukahaisenkatu 7 Turku'
+address = input('Type in your address: \n')
+# business_input = 'moving company'
+business_input = input('What kind of business/restaurant do you want to search: \n')
+business = business_input.replace(' ', '_')
+# radius_km = int(5000)/1000
+radius = int(input('Search radius in meters: \n'))
+radius_km = radius/1000
 
+# address into latitude and longitude values
 address_longlat = gmaps.geocode(address)[0]
 lat1 = address_longlat['geometry']['location']['lat']
 lon1 = address_longlat['geometry']['location']['lng']
 
 address_longlat = lat1,lon1
-# !!!
+# returns places nearby
 places = gmaps.places_nearby(location= address_longlat, type=business, rank_by='distance')
+# print(json.dumps(places, indent=2))
 
-#places = gmaps.places_nearby(location= address_longlat,radius=meters, type=business, rank_by='distance')
-#print(json.dumps(places, indent=2))
+# with open('json_data.json', 'w') as outfile:
+# json.dump(places, outfile)
 
-# Calculate Distance Between Two Points on Earth
+# calculates distance between two locations
 def distance(lat1, lat2, lon1, lon2):
      
     # The math module contains a function named
@@ -42,30 +44,42 @@ def distance(lat1, lat2, lon1, lon2):
  
     c = 2 * asin(sqrt(a))
     
-    # Radius of earth in kilometers. Use 3956 for miles
+    # radius of earth in kilometers. Use 3956 for miles
     r = 6371
       
     # calculate the result
-    return(c * r)
+    return round(c * r,3)
        
-# driver code for distance
-# need to get places longs and lats !!! 
+# driver code
 
 count=1
+print('We are looking for a',business_input,'within',radius,'meters \n')
 
 if places['status'] == 'ZERO_RESULTS':
         print ('No results found with your current parameters.')
 else:
-    print ('Here are your results: ')
+    print ('Here are your results: \n')
 
 for location in places['results']:
     lat2 = location['geometry']['location']['lat']
     lon2 = location['geometry']['location']['lng']
     business_name = location['name']
-    # need to round result
-    print(str(count)+'.')
-    count += 1
-    if distance(lat1, lat2, lon1, lon2) >= 1:
-        print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2), "kilometers ")
-    else: 
-        print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
+
+    if distance(lat1, lat2, lon1, lon2) <= radius_km:
+        print(str(count)+'.')
+        if distance(lat1, lat2, lon1, lon2) >= 1:
+            print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2), "kilometers ")
+        else: 
+            print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
+        if "rating" in location:
+            print(r'Rating:',location["rating"])
+        else:
+            print('No ratings.')
+        if "open_now" == True:
+            print('Status: Open') 
+        else: 
+            print('Status: Closed')
+
+        print('Address:',location['vicinity'],'\n')
+
+        count += 1

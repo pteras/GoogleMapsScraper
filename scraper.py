@@ -23,7 +23,7 @@ address_longlat = lat1,lon1
 places = gmaps.places_nearby(location= address_longlat, type=business, rank_by='distance')
 
 #places = gmaps.places_nearby(location= address_longlat,radius=meters, type=business, rank_by='distance')
-#print(json.dumps(places, indent=2))
+# print(json.dumps(places, indent=2))
 
 # Calculate Distance Between Two Points on Earth
 def distance(lat1, lat2, lon1, lon2):
@@ -62,6 +62,12 @@ for location in places['results']:
     lat2 = location['geometry']['location']['lat']
     lon2 = location['geometry']['location']['lng']
     business_name = location['name']
+    if "rating" in location:
+        print(location["rating"])
+    else:
+        print('No rating found.')
+    # rating = location['rating']
+    # print(rating)
     # need to round result
     print(str(count)+'.')
     count += 1

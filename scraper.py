@@ -75,6 +75,7 @@ for location in places['results']:
             print(r'Rating:',location["rating"])
         else:
             print('No ratings.')
+        # Tässä pieni ongelma
         if "open_now" == True:
             print('Status: Open') 
         else: 

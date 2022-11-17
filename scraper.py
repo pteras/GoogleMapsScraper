@@ -59,28 +59,38 @@ if places['status'] == 'ZERO_RESULTS':
         print ('No results found with your current parameters.')
 else:
     print ('Here are your results: \n')
-
+data = {}
 for location in places['results']:
     lat2 = location['geometry']['location']['lat']
     lon2 = location['geometry']['location']['lng']
     business_name = location['name']
-
+    data['name'] = business_name
     if distance(lat1, lat2, lon1, lon2) <= radius_km:
         print(str(count)+'.')
         if distance(lat1, lat2, lon1, lon2) >= 1:
             print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2), "kilometers ")
+            data['distance'] = distance(lat1, lat2, lon1, lon2)
         else: 
             print(r'The distance to', business_name, 'is:',distance(lat1, lat2, lon1, lon2)*1000, "meters")
+            data['distance'] = distance(lat1, lat2, lon1, lon2)*1000
         if "rating" in location:
             print(r'Rating:',location["rating"])
+            data['rating'] = location["rating"]
         else:
             print('No ratings.')
-        # Tässä pieni ongelma
-        if "open_now" == True:
-            print('Status: Open') 
-        else: 
-            print('Status: Closed')
+            data['rating'] = 0
+        
+        if "opening_hours" in location:
+            if "open_now" == True:
+                print('Status: Open')
+                data['opening_hours'] = location["opening_hours"]["open_now"]
+            else: 
+                print('Status: Closed')
+                data['opening_hours'] = False
 
         print('Address:',location['vicinity'],'\n')
+        data['vicinity'] = location["vicinity"] 
 
         count += 1
+
+# return {}

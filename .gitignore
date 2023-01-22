@@ -1,0 +1,7 @@
+node_modules
+json_data.json
+server/__pycache__
+server/__pycache__/scraper.cpython-310.pyc
+server/__pycache__/scraper.cpython-310.pyc
+server/__pycache__/scraper.cpython-310.pyc
+*.pyc
